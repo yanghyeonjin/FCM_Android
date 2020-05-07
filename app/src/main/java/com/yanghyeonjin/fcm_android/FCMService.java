@@ -1,17 +1,19 @@
 package com.yanghyeonjin.fcm_android;
 
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 
 public class FCMService extends FirebaseMessagingService {
     private static final String TAG = "FCMService";
 
     @Override
     public void onNewToken(@NonNull String s) {
-        /**
+        /*
          * 새 토큰이 생성될 때마다 onNewToken 콜백이 호출됩니다.
          *
          * 다음과 같은 경우에 등록 토큰이 변경될 수 있습니다.
@@ -26,5 +28,27 @@ public class FCMService extends FirebaseMessagingService {
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
         // sendRegistrationToServer(token);
+    }
+
+    @Override
+    public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
+        // 메시지를 받았을 경우, 그 메시지에 대하여 구현하는 부분
+        // TODO(developer): Handle FCM messages here.
+        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
+
+        sendNotification(remoteMessage);
+    }
+
+    private void sendNotification(RemoteMessage remoteMessage) {
+        Log.d(TAG, "From: " + remoteMessage.getFrom());
+
+        if (remoteMessage.getData().size() > 0) {
+            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+        }
+
+        // Check if message contains a notification payload.
+        if (remoteMessage.getNotification() != null) {
+            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+        }
     }
 }
