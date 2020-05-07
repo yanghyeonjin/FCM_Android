@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FCM_Android</string>
+    <string name="msg_token_fmt">now token: %s</string>
 </resources>
