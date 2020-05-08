@@ -53,6 +53,8 @@ public class NotificationManager {
 
         if (remoteMessage.getData().size() > 0) {
             String destination = remoteMessage.getData().get("destination");
+            title = remoteMessage.getData().get("title");
+            body = remoteMessage.getData().get("body");
 
             // Create an Intent for the activity you want to start
             if (destination != null) {
@@ -70,13 +72,6 @@ public class NotificationManager {
             }
         }
 
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            title = remoteMessage.getNotification().getTitle();
-            body = remoteMessage.getNotification().getBody();
-        }
-
-
         // Create the TaskStackBuilder and add the intent, which inflates the back stack
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntentWithParentStack(resultIntent);
@@ -86,7 +81,7 @@ public class NotificationManager {
 
 
         // 포그라운드 알림에 대한 설정...
-        // 백그라운드 알림은 Node Server 쪽에서 설정해주는 것 같음.
+        // 백그라운드 알림은 Node Server 쪽에서 설정해주는 것 같음. -> data를 통해 모든 값을 전달함으로써 해결
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
                     .setChannelId(CHANNEL_ID)
