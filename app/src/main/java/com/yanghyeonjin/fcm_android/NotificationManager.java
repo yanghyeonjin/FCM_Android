@@ -4,6 +4,8 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.content.Context;
 import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
@@ -53,6 +55,12 @@ public class NotificationManager {
             body = remoteMessage.getNotification().getBody();
         }
 
+        // 알림음
+        Uri defaultNotificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+
+        // 포그라운드 알림에 대한 설정...
+        // 백그라운드 알림은 Node Server 쪽에서 설정해주는 것 같음.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
                     .setChannelId(CHANNEL_ID)
@@ -61,7 +69,7 @@ public class NotificationManager {
                     .setContentTitle(title)
                     .setContentText(body)
                     .setAutoCancel(true)
-                    .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
+                    .setSound(defaultNotificationSound);
 
             getManager(context).notify(NOTIFY_ID, notificationBuilder.build());
         } else {
@@ -71,7 +79,7 @@ public class NotificationManager {
                     .setContentTitle(title)
                     .setContentText(body)
                     .setAutoCancel(true)
-                    .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
+                    .setSound(defaultNotificationSound);
 
             getManager(context).notify(NOTIFY_ID, notificationBuilder.build());
         }
