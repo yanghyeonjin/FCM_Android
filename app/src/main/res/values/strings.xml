@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">FCM_Android</string>
     <string name="msg_token_fmt">now token: %s</string>
+    <string name="btn_page1">GO TO PAGE 1</string>
+    <string name="btn_page2">GO TO PAGE 2</string>
+    <string name="btn_page3">GO TO PAGE 3</string>
+    <string name="page1">PAGE 1</string>
+    <string name="page2">PAGE 2</string>
+    <string name="page3">PAGE 3</string>
 </resources>

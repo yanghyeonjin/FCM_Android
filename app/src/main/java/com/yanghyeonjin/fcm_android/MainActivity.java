@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -21,6 +23,7 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    private Button btnPage1, btnPage2, btnPage3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,36 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
+
+        /* find id */
+        btnPage1 = findViewById(R.id.btn_page1);
+        btnPage2 = findViewById(R.id.btn_page2);
+        btnPage3 = findViewById(R.id.btn_page3);
+
+        /* button click */
+        btnPage1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Page1Activity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnPage2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Page2Activity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnPage3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Page3Activity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
