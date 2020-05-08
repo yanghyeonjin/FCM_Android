@@ -9,6 +9,7 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -54,17 +55,19 @@ public class NotificationManager {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                    .setChannelId(CHANNEL_ID)
                     .setSmallIcon(getSmallIcon())
+                    .setColor(ContextCompat.getColor(context, R.color.colorAccent))
                     .setContentTitle(title)
                     .setContentText(body)
                     .setAutoCancel(true)
-                    .setChannelId(CHANNEL_ID)
                     .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
 
             getManager(context).notify(NOTIFY_ID, notificationBuilder.build());
         } else {
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "")
                     .setSmallIcon(getSmallIcon())
+                    .setColor(context.getResources().getColor(R.color.colorAccent))
                     .setContentTitle(title)
                     .setContentText(body)
                     .setAutoCancel(true)
