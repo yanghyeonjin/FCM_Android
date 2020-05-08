@@ -2,7 +2,10 @@ package com.yanghyeonjin.fcm_android;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -43,10 +46,28 @@ public class NotificationManager {
     public static void sendNotification(Context context, RemoteMessage remoteMessage) {
         String title = "";
         String body = "";
+        Intent resultIntent = null;
+        Uri defaultNotificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION); // 알림음
+
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+            String destination = remoteMessage.getData().get("destination");
+
+            // Create an Intent for the activity you want to start
+            if (destination != null) {
+                switch (destination) {
+                    case "page1":
+                        resultIntent = new Intent(context, Page1Activity.class);
+                        break;
+                    case "page2":
+                        resultIntent = new Intent(context, Page2Activity.class);
+                        break;
+                    case "page3":
+                        resultIntent = new Intent(context, Page3Activity.class);
+                        break;
+                }
+            }
         }
 
         // Check if message contains a notification payload.
@@ -55,8 +76,13 @@ public class NotificationManager {
             body = remoteMessage.getNotification().getBody();
         }
 
-        // 알림음
-        Uri defaultNotificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        // Create the TaskStackBuilder and add the intent, which inflates the back stack
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addNextIntentWithParentStack(resultIntent);
+        // Get the PendingIntent containing the entire back stack
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
 
 
         // 포그라운드 알림에 대한 설정...
@@ -68,6 +94,7 @@ public class NotificationManager {
                     .setColor(ContextCompat.getColor(context, R.color.colorAccent))
                     .setContentTitle(title)
                     .setContentText(body)
+                    .setContentIntent(resultPendingIntent)
                     .setAutoCancel(true)
                     .setSound(defaultNotificationSound);
 
@@ -78,6 +105,7 @@ public class NotificationManager {
                     .setColor(context.getResources().getColor(R.color.colorAccent))
                     .setContentTitle(title)
                     .setContentText(body)
+                    .setContentIntent(resultPendingIntent)
                     .setAutoCancel(true)
                     .setSound(defaultNotificationSound);
 
